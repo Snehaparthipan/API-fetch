@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         body {
+      background-color: #111;
+      color: white;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    button {
+      margin-top: 40px;
+      background-color: orange;
+      border: none;
+      color: white;
+      width: 150px;
+      height: 40px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: darkorange;
+      transform: scale(1.05);
+    }
+
+    #card {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      justify-items: center;
+      padding: 20px;
+    }
+
+    #card img {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    #card img:hover {
+      transform: scale(1.08);
+    }
+
+    #geterr {
+      color: red;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <center><button onclick="getdata()">Get Data</button></center>
+
+        <!-- card for API data -->
+        <div id="card"></div>
+        <!-- for error message -->
+        <p id="geterr"></p>
+
+        <!-- for loading message -->
+        <p id="message"></p>
+    
+
+    <script>
+        // getting  id message
+         let mesg=document.getElementById("message")
+        async function getdata() {
+            mesg.innerHTML="Loading...."
+            try {
+                const res = await fetch("https://api.thecatapi.com/v1/images/search")
+                const data = await res.json()
+                console.log(data)
+                let card = document.getElementById("card")
+                card.innerHTML += data.map((img) => (`
+                    <img src="${img.url}">
+                `
+                ))
+                return;
+                mesg.innerHTML=""
+            }
+            catch (err) {
+                document.getElementById("geterr").innerHTML = `error:${err}`
+                console.log(err)
+            }
+        }
+    </script>
+</body>
+
+</html>
